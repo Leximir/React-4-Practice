@@ -1,9 +1,6 @@
 import React from "react";
 import {useState} from "react";
 
-interface ProductInterface {
-    [phone: string]: number
-}
 
 function Products(props){
 
@@ -13,16 +10,52 @@ function Products(props){
         'iPhone 16': 1100,
     });
 
+    let [newProductName, setNewProductName] = useState("");
+    let [newProductPrice, setNewProductPrice] = useState("");
+
+    function addProduct(){
+
+        if(newProductName === ""){
+            return;
+        }
+
+        if(newProductPrice === ""){
+            return;
+        }
+
+        let newProduct = {[newProductName]: parseInt(newProductPrice)};
+
+        /*
+        * oldProducts - dosadasnji proizvodi
+        * => arrow funkcija
+        */
+
+        setProducts( currentProducts => ({
+            ...currentProducts, // spoji trenutne proizvode
+            ...newProduct // spoji novi proizvod
+        }) );
+
+    }
+
     return (
         <>
+
+            <button onClick={ e => setProducts({})}>Delete Products</button>
+
             { Object.entries(products).map( ([phone,price]) => (
                 <p>{ phone }, price: ${ CalculateTax(price, props.tax) }</p>
             )) }
+
+            <div>
+                <input onInput={ e => setNewProductName(e.target.value) } type="text" placeholder='Unesite ime proizvoda'/>
+                <input onInput={ e => setNewProductPrice(e.target.value) } type="number" placeholder='Unesite cijenu proizvoda'/>
+                <button onClick={addProduct}>Add new Product</button>
+            </div>
         </>
     );
 }
 
-function CalculateTax(price: number, tax: number): number{
+function CalculateTax(price, tax){
     return ((price * tax) / 100) + price;
 }
 
