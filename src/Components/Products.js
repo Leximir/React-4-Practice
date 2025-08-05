@@ -1,16 +1,18 @@
 import React from "react";
+import {useState} from "react";
 
-interface ProductInterface{
-    [key: string]: number
+interface ProductInterface {
+    [phone: string]: number
 }
 
-const products: ProductInterface = {
-    'iPhone 14': 900,
-    'iPhone 15': 1000,
-    'iPhone 16': 1100,
-};
-
 function Products(props){
+
+    let [products, setProducts] = useState({
+        'iPhone 14': 900,
+        'iPhone 15': 1000,
+        'iPhone 16': 1100,
+    });
+
     return (
         <>
             { Object.entries(products).map( ([phone,price]) => (
